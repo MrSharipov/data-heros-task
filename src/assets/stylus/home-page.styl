@@ -3,7 +3,7 @@
     display flex
     justify-content center
     align-items center
-    padding 7rem
+    padding 4rem
     h1 {
       color rgb(32, 35, 41)
       font-size 6rem
@@ -12,6 +12,23 @@
   section {
     background-color rgb(39, 43, 51)
     min-height 65vh
+    .settings {
+      display flex
+      justify-content center
+      align-items center
+      background-color aliceblue
+      border-top 2px solid rgb(39, 43, 51)
+      .filters {
+        display flex
+        justify-content center
+        gap 2rem
+        padding 1.2rem
+      }
+      .paginator{
+        display flex
+        gap 1rem
+      }
+    }
     .gallery {
       display flex
       flex-wrap wrap

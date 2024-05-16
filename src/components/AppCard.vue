@@ -1,6 +1,6 @@
 <template>
   <div class="app-card">
-    <img :src="image" :alt="name">
+    <img :src="image" :alt="name" />
     <div class="content">
       <h3>{{ name }}</h3>
       <p class="status">{{ `${status} - ${species}` }}</p>
@@ -24,7 +24,7 @@ const props = defineProps({
   origin: String,
   location: String,
   image: String
-})
+});
 </script>
 
 <style src="@/assets/stylus/card.styl"></style>
