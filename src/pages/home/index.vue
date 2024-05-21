@@ -6,15 +6,20 @@
     <section>
       <div class="settings">
         <div class="filters">
-          <app-select-input />
-          <app-select-input />
-          <button>Apply</button>
+          <app-select-input
+            v-model="statusValue"
+            option-label="status"
+            :options="[{name: 'hi', value: 1}, {name: 'hello', value: 2}]"
+          />
+          <app-select-input
+            v-model="nameValue"
+            option-label="name"
+            :options="[{name: 'hi', value: 1}, {name: 'hello', value: 2}]"
+          />
+          <app-button title="Apply" />
         </div>
         <div class="paginator">
-          <button>Prev</button>
-          <p>Current page: 1</p>
-          <p>All pages: 48</p>
-          <button>Next</button>
+          <app-paginator />
         </div>
       </div>
       <div class="gallery">
@@ -36,7 +41,11 @@
 import AppCard from '@/components/AppCard.vue';
 import { onMounted, ref } from 'vue';
 import AppSelectInput from '@/components/AppSelectInput.vue';
+import AppPaginator from '@/components/AppPaginator.vue';
+import AppButton from '@/components/ui/AppButton.vue';
 
+const statusValue = ref('');
+const nameValue = ref('');
 const characters = ref({});
 const pagination = ref({
   count: 0,
