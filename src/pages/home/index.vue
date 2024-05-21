@@ -9,62 +9,107 @@
           <app-select-input
             v-model="statusValue"
             option-label="status"
-            :options="[{name: 'hi', value: 1}, {name: 'hello', value: 2}]"
+            :options="statusSelectList"
           />
           <app-select-input
             v-model="nameValue"
             option-label="name"
-            :options="[{name: 'hi', value: 1}, {name: 'hello', value: 2}]"
+            :options="nameSelectList"
           />
-          <app-button title="Apply" />
+          <app-button @click="handleFilter" title="Apply" />
         </div>
         <div class="paginator">
           <app-paginator />
         </div>
       </div>
       <div class="gallery">
-        <app-card
-          v-for="(character, index) in characters"
-          :key="index"
-          :name="character.name"
-          :status="character.status"
-          :species="character.species"
-          :origin="character.origin.name"
-          :location="character.location.name"
-          :image="character.image"
-        />
+        <template v-if="characters && characters.length > 0">
+          <app-card
+            v-for="(character, index) in characters"
+            :key="index"
+            :name="character.name"
+            :status="character.status"
+            :species="character.species"
+            :origin="character.origin.name"
+            :location="character.location.name"
+            :image="character.image"
+          />
+        </template>
+
+        <h1 class="not-found" v-else>Not Found</h1>
       </div>
     </section>
   </div>
 </template>
 <script setup>
-import AppCard from '@/components/AppCard.vue';
-import { onMounted, ref } from 'vue';
-import AppSelectInput from '@/components/AppSelectInput.vue';
-import AppPaginator from '@/components/AppPaginator.vue';
-import AppButton from '@/components/ui/AppButton.vue';
+import AppCard from '@/components/AppCard.vue'
+import { onMounted, ref } from 'vue'
+import AppSelectInput from '@/components/AppSelectInput.vue'
+import AppPaginator from '@/components/AppPaginator.vue'
+import AppButton from '@/components/ui/AppButton.vue'
 
-const statusValue = ref('');
-const nameValue = ref('');
-const characters = ref({});
+const statusValue = ref('')
+const nameValue = ref('')
+const characters = ref({})
 const pagination = ref({
   count: 0,
   pages: 1,
   next: '#',
   prev: null
-});
+})
 
-const getData = () => {
-  fetch('https://rickandmortyapi.com/api/character').then((res) =>
+const statusSelectList = ref([
+  {
+    key: 'Alive',
+    value: 'Alive'
+  },
+  {
+    key: 'Unknown',
+    value: 'unknown'
+  },
+  {
+    key: 'Dead',
+    value: 'Dead'
+  }
+])
+
+const nameSelectList = ref([
+  {
+    key: 'Summer',
+    value: 'summer'
+  },
+  {
+    key: 'Jerry',
+    value: 'jerry'
+  },
+  {
+    key: 'Morty',
+    value: 'morty'
+  },
+  {
+    key: 'Agency',
+    value: 'agency'
+  }
+])
+
+const handleFilter = () => {
+  getData(nameValue.value?.value, statusValue.value?.value)
+}
+
+const getData = (name = null, status = null) => {
+  let url = 'https://rickandmortyapi.com/api/character?'
+  name ? url += `name=${name}` : url
+  status ? url += `&status=${status}` : url
+  fetch(url).then((res) =>
     res.json().then((data) => {
-      characters.value = data.results;
-      pagination.value = data.info;
+      characters.value = data.results
+      pagination.value = data.info
     })
-  );
-};
+  )
+}
 
 onMounted(() => {
-  getData();
-});
+  getData()
+})
 </script>
 <style src="@/assets/stylus/home-page.styl"></style>

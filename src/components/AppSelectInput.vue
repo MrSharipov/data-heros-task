@@ -2,7 +2,7 @@
   <div
     class="app-select-input"
     :style="`width: ${width};`"
-    ref="selectElement"
+    ref="selectElementRef"
   >
     <label for="selectEl">{{ label }}</label>
     <div id="selectEl" class="select-wrapper">
@@ -13,18 +13,19 @@
           icon="cross"
           @click="clearSelectedOption"
         />
-        <app-icon v-else icon="filter"/>
+        <app-icon v-else icon="filter" />
       </div>
       <Transition>
-        <div v-if="isOptionVisible" class="option-wrapper">
-
+        <div
+          v-if="isOptionVisible && options.length > 0"
+          class="option-wrapper">
           <div
             class="option"
             v-for="(option, i) in options"
             :key="i"
             @click="()=>toggleOptionSelect(option)"
           >
-            {{ option?.name || option }}
+            {{ option?.key || option }}
           </div>
         </div>
       </Transition>
@@ -63,12 +64,12 @@ const props = defineProps({
 })
 const selectedOption = ref(props.modelValue)
 const isOptionVisible = ref(false)
-const selectElement = ref(null)
+const selectElementRef = ref(null)
 
 const emit = defineEmits(['update:modelValue'])
 
 const mappedSelectedOption = computed(() => {
-  return selectedOption.value?.name || selectedOption.value || `Select ${props.optionLabel}...`
+  return selectedOption.value?.key || selectedOption.value?.key || `Select ${props.optionLabel}...`
 })
 const toggleOptionSelect = (option) => {
   selectedOption.value = option
@@ -77,10 +78,10 @@ const toggleOptionSelect = (option) => {
 }
 
 const closeOptionSelect = (element) => {
-  if (!selectElement.value.contains(element?.target)) {
+  if (!selectElementRef.value.contains(element?.target)) {
     setTimeout(() => {
       isOptionVisible.value = false
-    }, 0)
+    }, 1)
 
   }
 }
