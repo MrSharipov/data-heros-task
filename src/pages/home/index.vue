@@ -69,7 +69,7 @@ const updatePagination = (data) => {
   } else if (data.next) {
     pagination.value.current = parseInt(data.next.split('page=')[1].charAt(0))-1;
   } else {
-    return data.pages
+    pagination.value.current = data.pages
   }
 }
 
