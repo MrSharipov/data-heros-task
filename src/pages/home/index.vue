@@ -17,7 +17,11 @@
           <app-button @click="handleFilter" title="Apply" />
         </div>
         <div class="paginator">
-          <app-paginator />
+          <app-paginator
+            :pagination
+            @next="getData"
+            @prev="getData"
+          />
         </div>
       </div>
       <div class="gallery">
@@ -47,15 +51,27 @@ import AppPaginator from '@/components/AppPaginator.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppSearchInput from '@/components/form/AppSearchInput.vue'
 
-const searchedName = ref('');
+const searchedName = ref('')
 const statusValue = ref('')
 const characters = ref({})
 const pagination = ref({
   count: 0,
   pages: 1,
+  current: 1,
   next: '#',
   prev: null
 })
+
+const updatePagination = (data) => {
+  pagination.value = data;
+  if (data.prev === null) {
+    pagination.value.current =  1;
+  } else if (data.next) {
+    pagination.value.current = parseInt(data.next.split('page=')[1].charAt(0))-1;
+  } else {
+    return data.pages
+  }
+}
 
 const statusSelectList = ref([
   {
@@ -71,25 +87,23 @@ const statusSelectList = ref([
     value: 'Dead'
   }
 ])
+const url = ref('https://rickandmortyapi.com/api/character?')
 
 const handleFilter = () => {
-  getData(searchedName.value, statusValue.value?.value)
+  getData(`${url.value}${searchedName.value ? `name=${searchedName.value}` : ''}${statusValue.value?.value ? `status=${statusValue.value?.value}` : ''}`)
 }
 
-const getData = (name = null, status = null) => {
-  let url = 'https://rickandmortyapi.com/api/character?'
-  name ? url += `name=${name}` : url
-  status ? url += `&status=${status}` : url
-  fetch(url).then((res) =>
+const getData = (fetchUrl) => {
+  fetch(fetchUrl).then((res) =>
     res.json().then((data) => {
       characters.value = data.results
-      pagination.value = data.info
+      updatePagination(data.info)
     })
   )
 }
 
 onMounted(() => {
-  getData()
+  getData(url.value)
 })
 </script>
 <style src="@/assets/stylus/home-page.styl"></style>

@@ -1,12 +1,22 @@
 <template>
   <div class="app-button">
-    <button>{{ title }}</button>
+    <button
+      :class="{ 'disabled-button': disabled }"
+      :disabled="disabled"
+    >
+      {{ title }}
+    </button>
   </div>
 </template>
 <script setup>
 defineProps({
-  title: String
-});
+  title: String,
+  disabled: {
+    type: Boolean,
+    default: false,
+    required: false
+  }
+})
 </script>
 
 <style lang="stylus" scoped>
@@ -18,9 +28,16 @@ defineProps({
     padding 8px
     border-radius 6px
     width 6rem
-    &:hover{
+    &:hover {
       background-color gray
       color white
+    }
+  }
+  .disabled-button {
+    cursor not-allowed
+    &:hover {
+      background-color transparent
+      color inherit
     }
   }
 }
