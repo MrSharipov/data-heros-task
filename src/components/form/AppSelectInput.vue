@@ -1,12 +1,15 @@
 <template>
   <div
     class="app-select-input"
-    :style="`width: ${width};`"
     ref="selectElementRef"
   >
     <label for="selectEl">{{ label }}</label>
     <div id="selectEl" class="select-wrapper">
-      <div class="selected-option" @click="()=> isOptionVisible = true">
+      <div
+        class="selected-option"
+        :style="`width: ${width}`"
+        @click="()=> isOptionVisible = true"
+      >
         {{ mappedSelectedOption }}
         <app-icon
           v-if="selectedOption && clearable"

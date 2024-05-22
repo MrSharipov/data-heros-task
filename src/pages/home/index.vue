@@ -6,15 +6,13 @@
     <section>
       <div class="settings">
         <div class="filters">
+          <app-search-input
+            v-model="searchedName"
+          />
           <app-select-input
             v-model="statusValue"
             option-label="status"
             :options="statusSelectList"
-          />
-          <app-select-input
-            v-model="nameValue"
-            option-label="name"
-            :options="nameSelectList"
           />
           <app-button @click="handleFilter" title="Apply" />
         </div>
@@ -44,12 +42,13 @@
 <script setup>
 import AppCard from '@/components/AppCard.vue'
 import { onMounted, ref } from 'vue'
-import AppSelectInput from '@/components/AppSelectInput.vue'
+import AppSelectInput from '@/components/form/AppSelectInput.vue'
 import AppPaginator from '@/components/AppPaginator.vue'
 import AppButton from '@/components/ui/AppButton.vue'
+import AppSearchInput from '@/components/form/AppSearchInput.vue'
 
+const searchedName = ref('');
 const statusValue = ref('')
-const nameValue = ref('')
 const characters = ref({})
 const pagination = ref({
   count: 0,
@@ -73,27 +72,8 @@ const statusSelectList = ref([
   }
 ])
 
-const nameSelectList = ref([
-  {
-    key: 'Summer',
-    value: 'summer'
-  },
-  {
-    key: 'Jerry',
-    value: 'jerry'
-  },
-  {
-    key: 'Morty',
-    value: 'morty'
-  },
-  {
-    key: 'Agency',
-    value: 'agency'
-  }
-])
-
 const handleFilter = () => {
-  getData(nameValue.value?.value, statusValue.value?.value)
+  getData(searchedName.value, statusValue.value?.value)
 }
 
 const getData = (name = null, status = null) => {

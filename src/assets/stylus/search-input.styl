@@ -1,0 +1,27 @@
+.app-search-input{
+  position relative
+  input{
+    min-width 12rem
+    min-height 1.35rem
+    border 1px solid gray
+    font-size 16px
+    border-radius 6px
+    padding 8px
+    padding-right 18%
+    background-color transparent
+    //background-image url("/public/images/search.svg")
+    background-size: .8rem;
+    background-repeat: no-repeat;
+    background-position: right 0.5em center;
+
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+  }
+  .clearInput{
+    position: absolute;
+    right -.4rem
+    top 25%
+    cursor pointer
+  }
+}

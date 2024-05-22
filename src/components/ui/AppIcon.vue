@@ -1,6 +1,9 @@
 <template>
   <div class="app-icon">
-    <i :class="`fi fi-${type}-${icon}`"></i>
+    <i
+      :class="`fi fi-${type}-${icon}`"
+      :style="`font-size: ${size}`"
+    ></i>
   </div>
 </template>
 <script setup lang="ts">
@@ -12,15 +15,14 @@ defineProps({
   type: {
     type: String,
     required: false,
-    default:'rr'
+    default: 'rr'
+  },
+  size: {
+    type: String,
+    required: false,
+    default: '1rem'
   }
 })
 </script>
 
-<style lang="stylus" scoped>
-.app-icon {
-  i{
-    font-size 1rem
-  }
-}
-</style>
+<style></style>
